@@ -11,15 +11,23 @@ async function main() {
   //
   // If this script is run directly using `node` you may want to call compile
   // manually to make sure everything is compiled
-  // await hre.run('compile');
+  await hre.run("compile");
 
-  // We get the contract to deploy
-  const Greeter = await hre.ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+  // We deploy the erc20 contract
+  const PironToken = await hre.ethers.getContractFactory("PironToken");
+  const pironToken = await PironToken.deploy();
 
-  await greeter.deployed();
+  await pironToken.deployed();
 
-  console.log("Greeter deployed to:", greeter.address);
+  console.log("Piron token deployed to:", pironToken.address);
+
+  // we deloy the staking contract
+  const Staking = await hre.ethers.getContractFactory("StakePIR");
+  const staking = await Staking.deploy(pironToken.address);
+
+  await staking.deployed();
+
+  console.log("staking deployed to:", staking.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

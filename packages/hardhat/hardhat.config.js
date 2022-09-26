@@ -50,7 +50,7 @@ module.exports = {
     },
   },
   solidity: {
-    version: "0.8.4",
+    version: "0.8.14",
   },
   namedAccounts: {
     deployer: 0,
