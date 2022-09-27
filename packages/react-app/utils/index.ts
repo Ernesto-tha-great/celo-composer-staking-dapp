@@ -10,6 +10,13 @@ export function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
   return {
     width,
-    height
+    height,
   };
+}
+
+export function formatTime(timestamp: number) {
+  const milliseconds = timestamp * 1000;
+  const dateObject = new Date(milliseconds);
+  const humanDateFormat = dateObject.toLocaleString();
+  return humanDateFormat;
 }

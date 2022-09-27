@@ -1,9 +1,7 @@
 import * as React from "react";
-import { Tabs, Tab, Typography, Box } from "@mui/material";
 import deployedContracts from "@celo-composer/hardhat/deployments/hardhat_contracts.json";
 import { useCelo } from "@celo/react-celo";
 import AppLayout from "@/components/layout/AppLayout";
-import { useEffect } from "react";
 import HomePage from "./HomePage";
 
 export default function App() {

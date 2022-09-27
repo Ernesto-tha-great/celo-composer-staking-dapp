@@ -11,11 +11,10 @@ interface Props {
 
 export default function AppLayout({ title, description, children }: Props) {
   return (
-    <div>
+    <div className="flex-1 h-full bg-gray-800">
       <Header />
       <Meta title={title} description={description} />
       {children}
-      <Footer />
     </div>
   );
 }
