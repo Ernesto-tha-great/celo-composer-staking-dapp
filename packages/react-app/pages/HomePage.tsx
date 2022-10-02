@@ -6,14 +6,10 @@ import { Input } from "@/components/Input";
 import { truncateAddress } from "@/utils";
 import { Button } from "@mui/material";
 import { ProjectCard } from "@/components/ProjectCard";
-// import { error } from "../utils/response";
-// import "react-toastify/dist/ReactToastify.css";
 
 export default function HomePage({ contracts }) {
   const { kit, address } = useCelo();
   const [loading, setLoading] = useState(false);
-
-  // Create a state variable to store the feeds in the blockchain
   const [error, setError] = useState<any>();
   const [success, setSuccess] = useState<boolean>(false);
   const [amount, setAmount] = useState<any>([]);
@@ -24,8 +20,11 @@ export default function HomePage({ contracts }) {
       fetchPositions();
     };
     pullData();
-  }, []);
+  }, [results]);
 
+  // Here we create instances of the contract
+
+  // We create an instance of our erc20 contract because we have to call the approve function before staking.
   const pironContract = contracts
     ? (new kit.connection.web3.eth.Contract(
         contracts.PironToken.abi,
@@ -33,6 +32,7 @@ export default function HomePage({ contracts }) {
       ) as any as PironToken)
     : null;
 
+  // This is an instance of our staking contract
   const stakingContract = contracts
     ? (new kit.connection.web3.eth.Contract(
         contracts.StakePIR.abi,
@@ -44,6 +44,7 @@ export default function HomePage({ contracts }) {
     setAmount(e.target.value);
   };
 
+  // Here we call several variables from our staking contract to know the state of the contract
   const fetchPositions = async () => {
     const data2 = [];
     const totalStake = await stakingContract.methods.totalStakers().call();
@@ -65,6 +66,7 @@ export default function HomePage({ contracts }) {
     console.log("result", results);
   };
 
+  // This function takes in the amount we passed in, and stakes it in our contract
   const Submit = async () => {
     const formatAmount = kit.connection.web3.utils.toHex(amount);
     try {
@@ -86,21 +88,17 @@ export default function HomePage({ contracts }) {
     }
   };
 
-  const fetchInfo = async () => {
-    const result = await stakingContract.methods.stakeInfos(address).call();
-    console.log(result);
-  };
-
   return (
     <div className="h-screen flex-1 flex flex-col">
       <div className="flex justify-between">
+        {/* composer ad */}
         <div className="w-7/12 my-20">
           <p className="text-xl font-semibold text-center text text-white">
             Earn amazing returns on your Piron tokens when you stake them on
             Piron staking dapp. Built using Celo Composer.
           </p>
         </div>
-
+        {/* Stake card */}
         <div className="p-3 mr-12 flex-col rounded-xl h-72 sm:w-72  w-full my-5 eth-card white-glassmorphism">
           <div className="flex flex-col w-full h-full">
             <div>
@@ -123,6 +121,8 @@ export default function HomePage({ contracts }) {
                 </Button>
               </div>
             </div>
+
+            {/* feedback */}
             <div className="mt-3">
               {loading ? (
                 <p className="text-xl text-white font-medium animate-pulse">
@@ -130,7 +130,7 @@ export default function HomePage({ contracts }) {
                 </p>
               ) : null}
 
-              {error ? (
+              {/* {error ? (
                 <div className="items-center flex flex-col">
                   <p className="text-xl text-red-800 font-medium">
                     {error.data}
@@ -147,9 +147,9 @@ export default function HomePage({ contracts }) {
                     okay
                   </Button>
                 </div>
-              ) : null}
+              ) : null} */}
 
-              {success ? (
+              {/* {success ? (
                 <div className="items-center flex flex-col">
                   <p className="text-xl text-green-800 font-medium px-4">
                     Success!
@@ -166,10 +166,11 @@ export default function HomePage({ contracts }) {
                     okay
                   </Button>
                 </div>
-              ) : null}
+              ) : null} */}
             </div>
           </div>
         </div>
+        {/* stake card end */}
       </div>
 
       <div className="blue-glassmorphism gradient-bg-transactions bg-gray-800">
