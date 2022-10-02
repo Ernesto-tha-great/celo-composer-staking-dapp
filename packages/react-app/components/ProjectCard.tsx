@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
+import React, { useState } from "react";
 import { useCelo } from "@celo/react-celo";
 import { StakePIR } from "@celo-composer/hardhat/types/StakePIR";
 import { truncateAddress, formatTime } from "@/utils";
@@ -10,7 +9,6 @@ export const ProjectCard = ({ results, contracts }) => {
   const { kit, address } = useCelo();
   const [stakeResults, setStakeResults] = useState<any>([]);
   const [loading, setLoading] = useState(false);
-  const [paused, setPaused] = useState(false);
 
   const stakingContract = contracts
     ? (new kit.connection.web3.eth.Contract(
@@ -25,7 +23,6 @@ export const ProjectCard = ({ results, contracts }) => {
 
   const fetchInfo = async () => {
     const data2 = [];
-    console.log("sdfghjk", addressStaked);
     const result = await stakingContract.methods
       .stakeInfos(addressStaked)
       .call();
@@ -44,7 +41,6 @@ export const ProjectCard = ({ results, contracts }) => {
     setLoading(true);
     await stakingContract.methods.pause().send({ from: address });
     console.log("paused");
-    setPaused(true);
     setLoading(false);
   };
 
@@ -52,11 +48,9 @@ export const ProjectCard = ({ results, contracts }) => {
     setLoading(true);
     await stakingContract.methods.unpause().send({ from: address });
     console.log("unpaused");
-    setPaused(false);
     setLoading(false);
   };
 
-  const claimRewards = async () => {};
   return (
     <div className="flex flex-1 my-2 flex-col mt-10  p-4 white-glassmorphism  2xl:min-w-[450px] 2xl:max-w-[450px] sm:min-w-[270px] sm:max-w-[300px]  rounded-md hover:shadow-2xl">
       <div className="my-4">
